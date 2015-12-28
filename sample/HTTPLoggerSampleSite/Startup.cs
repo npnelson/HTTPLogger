@@ -3,6 +3,7 @@ using Microsoft.AspNet.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.OptionsModel;
 using Microsoft.Extensions.PlatformAbstractions;
 using NPNelson.HTTPLogger;
 
@@ -40,11 +41,11 @@ namespace HTTPLoggerSampleSite
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory,IApplicationEnvironment appEnv)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory,IApplicationEnvironment appEnv,IOptions<HTTPLoggerOptions> options)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-            app.UseHTTPLogger(appEnv.ApplicationName,appEnv.ApplicationVersion);
+            app.UseHTTPLogger(options.Value,appEnv.ApplicationName,appEnv.ApplicationVersion);
 
             if (env.IsDevelopment())
             {

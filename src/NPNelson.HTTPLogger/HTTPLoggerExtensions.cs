@@ -9,7 +9,7 @@ namespace NPNelson.HTTPLogger
     public static class HTTPLoggerExtensions
     {
        
-        public static IApplicationBuilder UseHTTPLogger(this IApplicationBuilder builder,string appName,string appVersion)
+        public static IApplicationBuilder UseHTTPLogger(this IApplicationBuilder builder, HTTPLoggerOptions options,string appName,string appVersion)
         {
             if (builder == null)
             {
@@ -17,9 +17,9 @@ namespace NPNelson.HTTPLogger
             }
            
             var factory = builder.ApplicationServices.GetRequiredService<ILoggerFactory>();         
-            var options = builder.ApplicationServices.GetService<IOptions<HTTPLoggerOptions>>();
-            if (options.Value == null) throw new InvalidOperationException("HTTPLoggerOptions must be configured");
-            factory.AddProvider(new HTTPLoggerProvider( options.Value,appName,appVersion));
+           // var options = builder.ApplicationServices.GetService<IOptions<HTTPLoggerOptions>>();
+           
+            factory.AddProvider(new HTTPLoggerProvider( options,appName,appVersion));
 
             return builder.UseMiddleware<HTTPLoggerCaptureMiddleware>();
         }
