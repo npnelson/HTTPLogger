@@ -27,8 +27,16 @@ namespace HTTPLoggerSampleSite
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddOptions();
+
+
+            services.ConfigureHTTPLogger(options =>
+            {
+                options.Filter = (source, level) => level == LogLevel.Information;               
+            });
             // Add framework services.
             services.AddMvc();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -28,5 +28,7 @@ namespace NPNelson.HTTPLogger
         public QueryString Query { get; set; }
 
         public IReadableStringCollection Cookies { get; set; }
+
+        public string RemoteIPAddress { get; set; }
     }
 }

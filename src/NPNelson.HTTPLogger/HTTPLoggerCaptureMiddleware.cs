@@ -47,20 +47,22 @@ namespace NPNelson.HTTPLogger
             /// <returns>The HttpInfo for the current elm context</returns>
             private static HttpInfo GetHttpInfo(HttpContext context)
             {
-                return new HttpInfo()
-                {
-                    RequestID = context.Features.Get<IHttpRequestIdentifierFeature>().TraceIdentifier,
-                    Host = context.Request.Host,
-                    ContentType = context.Request.ContentType,
-                    Path = context.Request.Path,
-                    Scheme = context.Request.Scheme,
-                    StatusCode = context.Response.StatusCode,
-                    User = context.User,
-                    Method = context.Request.Method,
-                    Protocol = context.Request.Protocol,
-                    Headers = context.Request.Headers,
-                    Query = context.Request.QueryString,
-                    Cookies = context.Request.Cookies
+
+            return new HttpInfo()
+            {
+                RequestID = context.Features.Get<IHttpRequestIdentifierFeature>().TraceIdentifier,
+                Host = context.Request.Host,
+                ContentType = context.Request.ContentType,
+                Path = context.Request.Path,
+                Scheme = context.Request.Scheme,
+                StatusCode = context.Response.StatusCode,
+                User = context.User,
+                Method = context.Request.Method,
+                Protocol = context.Request.Protocol,
+                Headers = context.Request.Headers,
+                Query = context.Request.QueryString,
+                Cookies = context.Request.Cookies,
+                RemoteIPAddress = context?.Connection?.RemoteIpAddress?.ToString()   //remoteip won't come across until rc2   
                 };
             }
         }
