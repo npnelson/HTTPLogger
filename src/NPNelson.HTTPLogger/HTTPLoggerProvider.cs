@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 
 namespace NPNelson.HTTPLogger
 {
@@ -7,8 +8,10 @@ namespace NPNelson.HTTPLogger
     {
      
         private readonly HTTPLoggerOptions _options;
+        private readonly string _appName;
+        private readonly string _appVersion;
 
-        public HTTPLoggerProvider( HTTPLoggerOptions options)
+        public HTTPLoggerProvider( HTTPLoggerOptions options,string appName,string appVersion)
         {
            
 
@@ -19,11 +22,17 @@ namespace NPNelson.HTTPLogger
 
           
             _options = options;
+            _appName = appName;
+            _appVersion = appVersion;
         }
+
+     
+
+
 
         public ILogger CreateLogger(string name)
         {
-            return new HTTPLogger(name, _options);
+            return new HTTPLogger(name, _options,_appName,_appVersion);
         }
 
         public void Dispose()

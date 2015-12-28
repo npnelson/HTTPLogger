@@ -7,11 +7,16 @@ namespace NPNelson.HTTPLogger
     {
         private readonly string _name;
         private readonly HTTPLoggerOptions _options;
-  
-        public HTTPLogger(string name, HTTPLoggerOptions options)
+        private readonly string _appName;
+        private readonly string _appVersion;
+
+        public HTTPLogger(string name, HTTPLoggerOptions options,string appName,string appVersion)
         {
             _name = name;
             _options = options;
+            _appName = appName;
+            _appVersion = appVersion;
+
        
         }
 
@@ -58,7 +63,7 @@ namespace NPNelson.HTTPLogger
         {
             var scope = new HTTPLoggerScope(_name, state);
             scope.Context = HTTPLoggerScope.Current?.Context ?? GetNewActivityContext();
-            return HTTPLoggerScope.Push(scope);
+            return HTTPLoggerScope.Push(scope,new AzureTableLogSource.AzureTableLogSource(_options.StorageConnectionString,_options.LogTableName,_appName,_appVersion));
         }
 
         private ActivityContext GetNewActivityContext()

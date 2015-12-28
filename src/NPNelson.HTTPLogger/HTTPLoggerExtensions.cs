@@ -9,17 +9,17 @@ namespace NPNelson.HTTPLogger
     public static class HTTPLoggerExtensions
     {
        
-        public static IApplicationBuilder UseHTTPLogger(this IApplicationBuilder builder)
+        public static IApplicationBuilder UseHTTPLogger(this IApplicationBuilder builder,string appName,string appVersion)
         {
             if (builder == null)
             {
                 throw new ArgumentNullException(nameof(builder));
             }
-
-            // add the elm provider to the factory here so the logger can start capturing logs immediately
+           
             var factory = builder.ApplicationServices.GetRequiredService<ILoggerFactory>();         
             var options = builder.ApplicationServices.GetService<IOptions<HTTPLoggerOptions>>();
-            factory.AddProvider(new HTTPLoggerProvider( options?.Value ?? new HTTPLoggerOptions()));
+            if (options.Value == null) throw new InvalidOperationException("HTTPLoggerOptions must be configured");
+            factory.AddProvider(new HTTPLoggerProvider( options.Value,appName,appVersion));
 
             return builder.UseMiddleware<HTTPLoggerCaptureMiddleware>();
         }

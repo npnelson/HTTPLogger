@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Linq;
 using Newtonsoft.Json;
+using NPNelson.HTTPLogger.Abstractions;
 
 namespace NPNelson.HTTPLogger
 {
@@ -38,7 +39,7 @@ namespace NPNelson.HTTPLogger
             }
         }
 
-        public static IDisposable Push(HTTPLoggerScope scope)
+        public static IDisposable Push(HTTPLoggerScope scope,ILogSource logSource)
         {
             if (scope == null)
             {
@@ -83,7 +84,8 @@ namespace NPNelson.HTTPLogger
                     var childNodes = Current.Node.Children.Traverse(x => x.Children);
                    
                     var messages = Current.Node.Messages.Union(childNodes.SelectMany(x=>x.Messages)).OrderBy(x=>x.Time);
-                    var httpInfoJson = JsonConvert.SerializeObject(Current.Context.HttpInfo);              
+                   // var httpInfoJson = JsonConvert.SerializeObject(Current.Context.HttpInfo);
+                    logSource.WriteLog(Current.Context.HttpInfo, messages);             
                 }
                 Current = Current.Parent;
             });

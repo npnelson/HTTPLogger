@@ -9,6 +9,19 @@ namespace NPNelson.HTTPLogger
         /// Determines whether log statements should be logged based on the name of the logger
         /// and the <see cref="LogLevel"/> of the message.
         /// </summary>
-        public Func<string, LogLevel, bool> Filter { get; set; } = (name, level) => true;
+        public Func<string, LogLevel, bool> Filter
+        {
+
+            get
+            {
+                return (name, level) => level == LogLevel;
+            }
+        }
+
+        public string StorageConnectionString { get; set; }
+
+        public string LogTableName { get; set; }
+
+        public LogLevel LogLevel { get; set; }
     }
 }

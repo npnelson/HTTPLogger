@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Builder;
+﻿using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.PlatformAbstractions;
 using NPNelson.HTTPLogger;
 
 namespace HTTPLoggerSampleSite
@@ -17,8 +14,11 @@ namespace HTTPLoggerSampleSite
         {
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
-                .AddEnvironmentVariables();
+                .AddJsonFile("appsettings.json");
+
+            if (env.IsDevelopment()) builder.AddUserSecrets();
+
+                builder.AddEnvironmentVariables();
             Configuration = builder.Build();
         }
 
@@ -29,10 +29,10 @@ namespace HTTPLoggerSampleSite
         {
             services.AddOptions();
 
-
+            services.Configure<HTTPLoggerOptions>(Configuration.GetSection("HttpLogger"));
             services.ConfigureHTTPLogger(options =>
             {
-                options.Filter = (source, level) => level == LogLevel.Information;               
+               // options.Filter = (source, level) => level ==options.;               
             });
             // Add framework services.
             services.AddMvc();
@@ -40,11 +40,11 @@ namespace HTTPLoggerSampleSite
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory,IApplicationEnvironment appEnv)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-            app.UseHTTPLogger();
+            app.UseHTTPLogger(appEnv.ApplicationName,appEnv.ApplicationVersion);
 
             if (env.IsDevelopment())
             {

@@ -21,6 +21,7 @@
     }
   },
   "dependencies": {
-    "Newtonsoft.Json": "7.0.1"
+    "Newtonsoft.Json": "7.0.1",
+    "WindowsAzure.Storage": "6.2.2-preview"
   }
 }
