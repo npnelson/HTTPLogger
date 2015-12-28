@@ -78,7 +78,7 @@ namespace NPNelson.HTTPLogger
             return new DisposableAction(() =>
             {
                 Current.Node.EndTime = DateTimeOffset.UtcNow;
-                if (Current.Parent == null)
+                if (Current.Parent == null && Current.Context.HttpInfo!=null) //if httpinfo is null, it got intercepted someplace else (like glimpse) and we don't want to log it
                 {
                     //we are at the root, now get all the messages for this request
                     var childNodes = Current.Node.Children.Traverse(x => x.Children);

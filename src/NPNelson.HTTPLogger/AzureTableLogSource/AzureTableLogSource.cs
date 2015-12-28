@@ -40,6 +40,10 @@ namespace NPNelson.HTTPLogger.AzureTableLogSource
                 var temp = ex;
                 throw;
             }
+            if (messages == null)
+            {
+                throw new InvalidOperationException();
+            }
             var logEntity = new LogTableEntity(httpInfo, messages, _appName, _appVersion);
             var tableOperation = TableOperation.Insert(logEntity);
             try
@@ -55,7 +59,7 @@ namespace NPNelson.HTTPLogger.AzureTableLogSource
 
         public void WriteLog(HttpInfo httpInfo, IEnumerable<LogInfo> messages)
         {
-            WriteLogAsync(httpInfo, messages); //it's okay that it isn't awaited, we don't care
+            WriteLogAsync(httpInfo, messages).Wait(); //it's okay that it isn't awaited, we don't care
         }
     }
 }

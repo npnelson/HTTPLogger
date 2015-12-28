@@ -51,6 +51,9 @@ namespace NPNelson.HTTPLogger
             private static HttpInfo GetHttpInfo(HttpContext context)
             {
 
+           
+
+
             return new HttpInfo()
             {
                 //User should be done after the fact, probably StatusCode too
@@ -62,10 +65,9 @@ namespace NPNelson.HTTPLogger
                 StatusCode = context.Response.StatusCode,
                 Method = context.Request.Method,
                 Protocol = context.Request.Protocol,
-                Headers = context.Request.Headers,
-                Query = context.Request.QueryString,
-                Cookies = context.Request.Cookies.Where(x => !x.Key.StartsWith(".AspNet.Cookies")).ToList(), //.AspNet.Cookies seem to be encrypted and of no interest to us
-               // Cookies = context.Request.Cookies,
+                Headers = context.Request.Headers.Where(x=>x.Key!="Cookie").ToList(),
+                Query = context.Request.QueryString,               
+                Cookies = context.Request.Cookies.Where(x => !x.Key.StartsWith(".AspNet.Cookie")).ToList(),
                 RemoteIPAddress = context?.Connection?.RemoteIpAddress?.ToString()   //remoteip won't come across until rc2   
                 };
             }
