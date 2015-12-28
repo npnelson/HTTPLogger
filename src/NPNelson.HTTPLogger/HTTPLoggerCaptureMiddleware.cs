@@ -35,6 +35,7 @@ namespace NPNelson.HTTPLogger
                         }
                         finally
                         {
+                        HTTPLoggerScope.Current.Context.HttpInfo.User = context.User; //user won't get set until it is authorized in the pipeline
                         HTTPLoggerScope.Current.Context.HttpInfo.StatusCode = context.Response.StatusCode;
                         }
                     }
@@ -44,19 +45,19 @@ namespace NPNelson.HTTPLogger
             /// <summary>
             /// Takes the info from the given HttpContext and copies it to an HttpInfo object
             /// </summary>
-            /// <returns>The HttpInfo for the current elm context</returns>
+            /// <returns>The HttpInfo for the current httplogger context</returns>
             private static HttpInfo GetHttpInfo(HttpContext context)
             {
 
             return new HttpInfo()
             {
+                //User should be done after the fact, probably StatusCode too
                 RequestID = context.Features.Get<IHttpRequestIdentifierFeature>().TraceIdentifier,
                 Host = context.Request.Host,
                 ContentType = context.Request.ContentType,
                 Path = context.Request.Path,
                 Scheme = context.Request.Scheme,
-                StatusCode = context.Response.StatusCode,
-                User = context.User,
+                StatusCode = context.Response.StatusCode,             
                 Method = context.Request.Method,
                 Protocol = context.Request.Protocol,
                 Headers = context.Request.Headers,
