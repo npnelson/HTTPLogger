@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNet.Http;
+using Microsoft.Extensions.Primitives;
 using System.Security.Claims;
+using System.Collections.Generic;
 
 namespace NPNelson.HTTPLogger
 {
@@ -27,7 +29,7 @@ namespace NPNelson.HTTPLogger
 
         public QueryString Query { get; set; }
 
-        public IReadableStringCollection Cookies { get; set; }
+        public List<KeyValuePair<string,StringValues>> Cookies { get; set; }
 
         public string RemoteIPAddress { get; set; }
     }

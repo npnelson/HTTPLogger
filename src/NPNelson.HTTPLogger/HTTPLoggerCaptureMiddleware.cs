@@ -3,6 +3,7 @@ using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Http.Features;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.OptionsModel;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace NPNelson.HTTPLogger
@@ -32,7 +33,8 @@ namespace NPNelson.HTTPLogger
                         {
                             HTTPLoggerScope.Current.Context.HttpInfo = GetHttpInfo(context);
                             await _next(context);
-                        }
+                      
+                    }
                         finally
                         {
                         HTTPLoggerScope.Current.Context.HttpInfo.User = context.User; //user won't get set until it is authorized in the pipeline
@@ -57,12 +59,13 @@ namespace NPNelson.HTTPLogger
                 ContentType = context.Request.ContentType,
                 Path = context.Request.Path,
                 Scheme = context.Request.Scheme,
-                StatusCode = context.Response.StatusCode,             
+                StatusCode = context.Response.StatusCode,
                 Method = context.Request.Method,
                 Protocol = context.Request.Protocol,
                 Headers = context.Request.Headers,
                 Query = context.Request.QueryString,
-                Cookies = context.Request.Cookies,
+                Cookies = context.Request.Cookies.Where(x => !x.Key.StartsWith(".AspNet.Cookies")).ToList(), //.AspNet.Cookies seem to be encrypted and of no interest to us
+               // Cookies = context.Request.Cookies,
                 RemoteIPAddress = context?.Connection?.RemoteIpAddress?.ToString()   //remoteip won't come across until rc2   
                 };
             }
