@@ -48,7 +48,7 @@ namespace NPNelson.HTTPLogger
                 this.Path = httpInfo.Path;
                 this.ContentType = httpInfo.ContentType;
                 this.Scheme = httpInfo.Scheme;
-                this.Claims=httpInfo.User.Claims.Where(x => x.Type != "access_token" && x.Type != "id_token" && x.Type != "nonce" && x.Type!="Bearer" && x.Issuer!="LOCAL AUTHORITY" && x.Type!= "azure_id" && x.Type != "_id").Take(3).ToList(); //dont serialize some of these, they can be too long for one
+               // this.Claims=httpInfo.User.Claims.Where(x => x.Type != "access_token" && x.Type != "id_token" && x.Type != "nonce" && x.Type!="Bearer" && x.Issuer!="LOCAL AUTHORITY" && x.Type!= "azure_id" && x.Type != "_id").Take(3).ToList(); //dont serialize some of these, they can be too long for one
                 this.StatusCode = httpInfo.StatusCode;
                 this.Method = httpInfo.Method;
                 this.Protocol = httpInfo.Protocol;

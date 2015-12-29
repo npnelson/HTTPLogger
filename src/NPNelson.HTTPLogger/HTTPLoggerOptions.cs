@@ -14,7 +14,7 @@ namespace NPNelson.HTTPLogger
 
             get
             {
-                return (name, level) => level == LogLevel;
+                return (name, level) => level >= LogLevel;
             }
         }
 

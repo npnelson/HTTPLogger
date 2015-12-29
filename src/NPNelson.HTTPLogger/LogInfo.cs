@@ -23,7 +23,7 @@ namespace NPNelson.HTTPLogger
 
         public override string ToString()
         {
-            return $"{Time}-{Severity}:{Message}";
+            return $"{Time.ToString("yyyyMMddHH hh:mm:ss.fff")}-{Severity}:{Message}";
         }
     }
 }

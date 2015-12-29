@@ -21,7 +21,7 @@ namespace NPNelson.HTTPLogger.AzureTableLogSource
             this.Method = httpInfo?.Method;
             this.Scheme = httpInfo?.Scheme;
             this.StatusCode = httpInfo?.StatusCode??0;
-            this.UserName = httpInfo?.User?.Identities.FirstOrDefault(x => !String.IsNullOrWhiteSpace(x.Name))?.Name;
+            this.UserID = httpInfo?.User?.Identities.FirstOrDefault(x => !String.IsNullOrWhiteSpace(x.Name))?.Claims.Single(x=>x.Type=="user_id").Value;
             this.Duration = (messages.Max(x => x.Time) - this.Timestamp).TotalMilliseconds;
             this.RemoteIP = httpInfo?.RemoteIPAddress?.ToString();
             this.HttpInfo = httpInfo?.SerializedString;
@@ -38,7 +38,7 @@ namespace NPNelson.HTTPLogger.AzureTableLogSource
         public string Method { get; set; }
         public string Scheme { get; set; }
         public int StatusCode { get; set; }
-        public string UserName { get; set; }
+        public string UserID { get; set; }
         public double Duration { get; set; }
         public string RemoteIP { get; set; }
         public string AppName { get; set; }
