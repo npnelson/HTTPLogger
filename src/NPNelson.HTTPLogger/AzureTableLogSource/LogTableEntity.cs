@@ -31,6 +31,9 @@ namespace NPNelson.HTTPLogger.AzureTableLogSource
                 this.Messages += msg.ToString() + "\r\n";
             }
 
+            //table storage only allows 1Mb per record - sometimes a stack trace can be quite large, so let's chop messages down to about 900Kb if needed
+            if (Messages.Length > 900000) Messages = Messages.Substring(0, 900000);
+
         }
 
         public string Host { get; set; }
