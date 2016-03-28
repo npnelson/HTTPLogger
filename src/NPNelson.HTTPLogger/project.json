@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "1.0.0-dev-*",
   "description": "NPNelson.HTTPLogger Class Library",
   "authors": [ "Nicholas P Nelson" ],
@@ -21,7 +21,7 @@
     }
   },
   "dependencies": {
-    "Newtonsoft.Json": "7.0.1",
+    "Newtonsoft.Json": "8.0.3",
     "WindowsAzure.Storage": "6.2.2-preview"
   }
 }
